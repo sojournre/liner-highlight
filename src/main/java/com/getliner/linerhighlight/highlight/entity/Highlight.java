@@ -26,7 +26,7 @@ public class Highlight extends Auditable {
     @JoinColumn(name = "USER_ID")
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "PAGE_ID")
     private Page page;
 

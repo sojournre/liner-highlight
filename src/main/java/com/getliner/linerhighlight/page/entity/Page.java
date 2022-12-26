@@ -16,6 +16,6 @@ public class Page extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pageId;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String pageUrl;
 }

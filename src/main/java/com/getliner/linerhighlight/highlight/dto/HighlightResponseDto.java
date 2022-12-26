@@ -3,10 +3,12 @@ package com.getliner.linerhighlight.highlight.dto;
 import lombok.Getter;
 
 @Getter
-public class HighlightPostDto {
+public class HighlightResponseDto {
+    private long highlightId;
+
     private long userId;
 
-    private String pageUrl;
+    private long pageId;
 
     private String colorHex;
 
