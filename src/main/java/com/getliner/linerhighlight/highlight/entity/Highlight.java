@@ -10,10 +10,13 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-@Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"text", "USER_ID", "PAGE_ID", "THEME_COLOR_ID"})
+})
 public class Highlight extends Auditable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

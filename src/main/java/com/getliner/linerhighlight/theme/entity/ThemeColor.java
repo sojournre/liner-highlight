@@ -17,9 +17,6 @@ public class ThemeColor extends Auditable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long ThemeColorId;
 
-    @Column(nullable = false)
-    private int sequence;
-
     @ManyToOne
     @JoinColumn(name = "THEME_ID")
     private Theme theme;
@@ -27,4 +24,7 @@ public class ThemeColor extends Auditable {
     @ManyToOne
     @JoinColumn(name = "COLOR_ID")
     private Color color;
+
+    @Column(nullable = false)
+    private int sequence;
 }
