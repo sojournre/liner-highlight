@@ -4,7 +4,6 @@ import com.getliner.linerhighlight.highlight.dto.HighlightPostDto;
 import com.getliner.linerhighlight.highlight.entity.Highlight;
 import com.getliner.linerhighlight.highlight.mapper.HighlightMapper;
 import com.getliner.linerhighlight.highlight.service.HighlightService;
-import com.getliner.linerhighlight.page.entity.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,11 +25,7 @@ public class HighlightController {
 
     @PostMapping
     public ResponseEntity postHighlight(@Valid @RequestBody HighlightPostDto highlightPostDto) {
-        String pageUrl = highlightPostDto.getPageUrl();
-
         Highlight highlight = mapper.highlightPostDtoToHighlight(highlightPostDto);
-//        highlight.setPage(new Page());
-
 
         Highlight createdHighlight = highlightService.createHighlight(highlight);
 

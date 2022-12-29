@@ -7,7 +7,7 @@ INSERT INTO COLOR (color_hex) VALUES
 ('#f9d6c1')
 ;
 
-INSERT INTO USER (theme_id, email, password) VALUES
+INSERT INTO USERS (theme_id, email, password) VALUES
 (1, 'admin@getliner.com', 'admin1234')
 ;
 
