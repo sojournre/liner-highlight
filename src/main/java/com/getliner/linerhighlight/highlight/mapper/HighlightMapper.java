@@ -5,10 +5,12 @@ import com.getliner.linerhighlight.highlight.dto.HighlightPatchDto;
 import com.getliner.linerhighlight.highlight.dto.HighlightPostDto;
 import com.getliner.linerhighlight.highlight.dto.HighlightResponseDto;
 import com.getliner.linerhighlight.highlight.entity.Highlight;
-import com.getliner.linerhighlight.page.entity.Page;
+import com.getliner.linerhighlight.page.entity.Webpage;
 import com.getliner.linerhighlight.theme.entity.ThemeColor;
 import com.getliner.linerhighlight.user.entity.User;
 import org.mapstruct.Mapper;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface HighlightMapper {
@@ -19,17 +21,17 @@ public interface HighlightMapper {
 
         Highlight highlight = new Highlight();
         User user = new User();
-        Page page = new Page();
+        Webpage webpage = new Webpage();
         Color color = new Color();
         ThemeColor themeColor = new ThemeColor();
 
         user.setUserId(highlightPostDto.getUserId());
-        page.setPageUrl(highlightPostDto.getPageUrl());
+        webpage.setPageUrl(highlightPostDto.getPageUrl());
         color.setColorHex(highlightPostDto.getColorHex());
         themeColor.setColor(color);
 
         highlight.setUser(user);
-        highlight.setPage(page);
+        highlight.setWebpage(webpage);
         highlight.setText(highlightPostDto.getText());
         highlight.setThemeColor(themeColor);
 
@@ -62,10 +64,12 @@ public interface HighlightMapper {
         HighlightResponseDto highlightResponseDto = new HighlightResponseDto();
         highlightResponseDto.setHighlightId(highlight.getHighlightId());
         highlightResponseDto.setUserId(highlight.getUser().getUserId());
-        highlightResponseDto.setPageId(highlight.getPage().getPageId());
+        highlightResponseDto.setPageId(highlight.getWebpage().getPageId());
         highlightResponseDto.setColorHex(highlight.getThemeColor().getColor().getColorHex());
         highlightResponseDto.setText(highlight.getText());
 
         return highlightResponseDto;
     }
+
+    List<HighlightResponseDto> highlightsToHighlightResponseDtos(List<Highlight> highlights);
 }

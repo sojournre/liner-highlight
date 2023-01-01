@@ -1,7 +1,7 @@
 package com.getliner.linerhighlight.highlight.entity;
 
 import com.getliner.linerhighlight.audit.Auditable;
-import com.getliner.linerhighlight.page.entity.Page;
+import com.getliner.linerhighlight.page.entity.Webpage;
 import com.getliner.linerhighlight.theme.entity.ThemeColor;
 import com.getliner.linerhighlight.user.entity.User;
 import lombok.Getter;
@@ -31,7 +31,7 @@ public class Highlight extends Auditable {
 
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "PAGE_ID")
-    private Page page;
+    private Webpage webpage;
 
     @ManyToOne
     @JoinColumn(name = "THEME_COLOR_ID")

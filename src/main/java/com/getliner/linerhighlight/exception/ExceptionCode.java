@@ -9,6 +9,7 @@ public enum ExceptionCode {
     THEME_NOT_FOUND(404, "Theme not found"),
     THEME_COLOR_NOT_FOUND(404, "Theme Color not found"),
     HIGHLIGHT_NOT_FOUND(404, "Highlight not found"),
+    PAGE_NOT_FOUND(404, "Page not found"),
     COLOR_HEX_EXISTS(409, "Color Hex exists")
     ;
 

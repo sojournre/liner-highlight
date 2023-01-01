@@ -2,17 +2,22 @@ package com.getliner.linerhighlight.highlight.service;
 
 import com.getliner.linerhighlight.exception.BusinessLogicException;
 import com.getliner.linerhighlight.exception.ExceptionCode;
+import com.getliner.linerhighlight.highlight.dto.HighlightUserPageDto;
 import com.getliner.linerhighlight.highlight.entity.Highlight;
 import com.getliner.linerhighlight.highlight.repository.HighlightRepository;
-import com.getliner.linerhighlight.page.entity.Page;
+import com.getliner.linerhighlight.page.entity.Webpage;
 import com.getliner.linerhighlight.page.service.PageService;
 import com.getliner.linerhighlight.theme.entity.ThemeColor;
 import com.getliner.linerhighlight.theme.service.ThemeColorService;
 import com.getliner.linerhighlight.user.entity.User;
 import com.getliner.linerhighlight.user.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -27,8 +32,8 @@ public class HighlightService {
     public Highlight createHighlight(Highlight highlight) {
         // 유저가 존재하는지 확인
         ThemeColor themeColor = verifyHighlight(highlight);
-        Page verifiedPage = pageService.findVerifiedPage(highlight.getPage().getPageUrl());
-        highlight.setPage(verifiedPage);
+        Webpage verifiedWebpage = pageService.createWebpage(highlight.getWebpage().getPageUrl());
+        highlight.setWebpage(verifiedWebpage);
         highlight.setThemeColor(themeColor);
 
         return highlightRepository.save(highlight);
@@ -60,8 +65,21 @@ public class HighlightService {
     private ThemeColor verifyHighlight(Highlight highlight) {
         User verifiedUser = userService.findVerifiedUser(highlight.getUser().getUserId());
         Long userThemeId = verifiedUser.getThemeId();
-        // TODO colorHex의 값은 현재 설정된 테마 내 색 중에 하나인지 확인
+        // TODO 이미 저장된 highlight 인지 확인
 
         return themeColorService.findVerifiedThemeColor(userThemeId, highlight.getThemeColor());
+    }
+
+    public Page<Highlight> findWebpageHighlights(int page, int size, HighlightUserPageDto highlightUserPageDto) {
+        User verifiedUser = userService.findVerifiedUser(highlightUserPageDto.getUserId());
+        Webpage webpage;
+        if (highlightUserPageDto.getPageId() != null) {
+            webpage = pageService.findVerifiedWebpage(highlightUserPageDto.getPageId());
+        } else {
+            webpage = pageService.findVerifiedWebpage(highlightUserPageDto.getPageUrl());
+        }
+
+        return highlightRepository.findByUserAndWebpage(verifiedUser, webpage,
+                PageRequest.of(page, size, Sort.by("updatedAt").descending()));
     }
 }
