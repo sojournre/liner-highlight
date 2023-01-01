@@ -1,5 +1,7 @@
 package com.getliner.linerhighlight.highlight.service;
 
+import com.getliner.linerhighlight.exception.BusinessLogicException;
+import com.getliner.linerhighlight.exception.ExceptionCode;
 import com.getliner.linerhighlight.highlight.entity.Highlight;
 import com.getliner.linerhighlight.highlight.repository.HighlightRepository;
 import com.getliner.linerhighlight.page.entity.Page;
@@ -10,6 +12,9 @@ import com.getliner.linerhighlight.user.entity.User;
 import com.getliner.linerhighlight.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +32,29 @@ public class HighlightService {
         highlight.setThemeColor(themeColor);
 
         return highlightRepository.save(highlight);
+    }
+
+    public Highlight updateHighlight(Highlight highlight) {
+        Highlight findHighlight = findVerifiedHighlight(highlight.getHighlightId());
+        if (!Objects.equals(highlight.getUser().getUserId(), findHighlight.getUser().getUserId())) {
+            throw new BusinessLogicException(ExceptionCode.USER_NOT_CORRECT);
+        }
+
+        Optional<ThemeColor> optionalThemeColor = Optional.ofNullable(highlight.getThemeColor());
+        if (optionalThemeColor.isPresent()) {
+            ThemeColor themeColor = verifyHighlight(highlight);
+            findHighlight.setThemeColor(themeColor);
+        }
+
+        Optional.ofNullable(highlight.getText())
+                .ifPresent(findHighlight::setText);
+
+        return highlightRepository.save(findHighlight);
+    }
+
+    private Highlight findVerifiedHighlight(Long highlightId) {
+        Optional<Highlight> optionalHighlight = highlightRepository.findById(highlightId);
+        return optionalHighlight.orElseThrow(() -> new BusinessLogicException(ExceptionCode.HIGHLIGHT_NOT_FOUND));
     }
 
     private ThemeColor verifyHighlight(Highlight highlight) {

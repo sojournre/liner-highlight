@@ -1,5 +1,6 @@
 package com.getliner.linerhighlight.highlight.controller;
 
+import com.getliner.linerhighlight.highlight.dto.HighlightPatchDto;
 import com.getliner.linerhighlight.highlight.dto.HighlightPostDto;
 import com.getliner.linerhighlight.highlight.entity.Highlight;
 import com.getliner.linerhighlight.highlight.mapper.HighlightMapper;
@@ -8,10 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -32,4 +30,10 @@ public class HighlightController {
         return new ResponseEntity<>(mapper.highlightToHighlightResponseDto(createdHighlight), HttpStatus.CREATED);
     }
 
+    @PatchMapping
+    public ResponseEntity patchHighlight(@Valid @RequestBody HighlightPatchDto highlightPatchDto) {
+        Highlight highlight = highlightService.updateHighlight(mapper.highlightPatchDtoToHighlight(highlightPatchDto));
+
+        return new ResponseEntity<>(mapper.highlightToHighlightResponseDto(highlight), HttpStatus.OK);
+    }
 }

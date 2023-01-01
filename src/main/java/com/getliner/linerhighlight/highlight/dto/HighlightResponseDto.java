@@ -1,8 +1,10 @@
 package com.getliner.linerhighlight.highlight.dto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class HighlightResponseDto {
     private long highlightId;
 
