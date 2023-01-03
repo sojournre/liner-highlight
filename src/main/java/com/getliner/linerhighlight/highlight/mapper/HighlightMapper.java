@@ -1,6 +1,7 @@
 package com.getliner.linerhighlight.highlight.mapper;
 
 import com.getliner.linerhighlight.color.entity.Color;
+import com.getliner.linerhighlight.highlight.dto.HighlightPageResponseDto;
 import com.getliner.linerhighlight.highlight.dto.HighlightPatchDto;
 import com.getliner.linerhighlight.highlight.dto.HighlightPostDto;
 import com.getliner.linerhighlight.highlight.dto.HighlightResponseDto;
@@ -10,7 +11,10 @@ import com.getliner.linerhighlight.theme.entity.ThemeColor;
 import com.getliner.linerhighlight.user.entity.User;
 import org.mapstruct.Mapper;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Mapper(componentModel = "spring")
 public interface HighlightMapper {
@@ -71,5 +75,33 @@ public interface HighlightMapper {
         return highlightResponseDto;
     }
 
+    default HighlightPageResponseDto highlightSubSelectToHighlightPageResponseDto(HighlightSubSelect highlightSubSelect) {
+        HighlightPageResponseDto highlightPageResponseDto = new HighlightPageResponseDto();
+        highlightPageResponseDto.setPageId(highlightSubSelect.getWebpage().getPageId());
+        // TODO
+//        highlightPageResponseDto.setPageUrl(highlightSubSelect.);
+        return highlightPageResponseDto;
+    }
+
+//    default List<HighlightPageResponseDto> highlightSubSelectsToHighlightPageResponseDtos(List<HighlightSubSelect> highlightSubSelects) {
+//        return highlightSubSelects
+//                .stream()
+//                .map(highlightSubSelect -> HighlightPageResponseDto
+//                        .builder()
+//                        .)
+//    }
+
+    default List<HighlightPageResponseDto> highlightsToHighlightPageResponseDtos(List<Highlight> highlights) {
+        List<HighlightPageResponseDto> list = new ArrayList<>();
+        Map<Webpage, List<Highlight>> collect = highlights.stream().collect(Collectors.groupingBy(Highlight::getWebpage));
+//        for (Highlight highlight : highlights) {
+//            HighlightPageResponseDto highlightPageResponseDto = new HighlightPageResponseDto();
+//            highlightPageResponseDto.setPageId(highlight.getWebpage().getPageId());
+//            highlightPageResponseDto.setPageUrl(highlight.getWebpage().getPageUrl());
+//            highlightPageResponseDto.setHighlights();
+//            list.add()
+//        }
+        return list;
+    }
     List<HighlightResponseDto> highlightsToHighlightResponseDtos(List<Highlight> highlights);
 }

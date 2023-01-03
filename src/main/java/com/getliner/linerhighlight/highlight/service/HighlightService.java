@@ -82,4 +82,10 @@ public class HighlightService {
         return highlightRepository.findByUserAndWebpage(verifiedUser, webpage,
                 PageRequest.of(page, size, Sort.by("updatedAt").descending()));
     }
+
+    public List<Highlight> findHighlights(int page, int size, long userId) {
+        User verifiedUser = userService.findVerifiedUser(userId);
+
+        return highlightRepository.findByUser(verifiedUser.getUserId());
+    }
 }
